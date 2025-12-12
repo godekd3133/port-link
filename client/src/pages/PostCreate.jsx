@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { postService } from '../services';
+import { postService, uploadService } from '../services';
 import MarkdownEditor from '../components/MarkdownEditor';
 import './PostForm.css';
 
@@ -96,9 +96,16 @@ const PostCreate = () => {
   };
 
   const uploadMedia = async () => {
-    // For now, we'll use data URLs as placeholders
-    // In production, this would upload to S3
-    const urls = mediaPreviews.map(p => p.url);
+    // Upload files to S3 and return URLs
+    const urls = [];
+    for (const file of mediaFiles) {
+      try {
+        const result = await uploadService.uploadFile(file);
+        urls.push(result.url);
+      } catch (err) {
+        console.error('Failed to upload file:', file.name, err);
+      }
+    }
     return urls;
   };
 

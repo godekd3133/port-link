@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { postService } from '../services';
+import { postService, uploadService } from '../services';
 import MarkdownEditor from '../components/MarkdownEditor';
 import './PostForm.css';
 
@@ -21,6 +21,7 @@ const PostEdit = () => {
     coverImage: '',
   });
   const [mediaPreviews, setMediaPreviews] = useState([]);
+  const [newMediaFiles, setNewMediaFiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -73,13 +74,17 @@ const PostEdit = () => {
       return (isImage || isVideo) && isValidSize;
     });
 
+    // Track new files for upload
+    setNewMediaFiles(prev => [...prev, ...validFiles]);
+
     validFiles.forEach(file => {
       const reader = new FileReader();
       reader.onload = (e) => {
         setMediaPreviews(prev => [...prev, {
           url: e.target.result,
           type: file.type.startsWith('video/') ? 'video' : 'image',
-          name: file.name
+          name: file.name,
+          isNew: true
         }]);
       };
       reader.readAsDataURL(file);
@@ -87,6 +92,14 @@ const PostEdit = () => {
   };
 
   const removeMedia = (index) => {
+    const preview = mediaPreviews[index];
+    if (preview?.isNew) {
+      // Remove from newMediaFiles as well
+      const newFileIndex = newMediaFiles.findIndex(f => f.name === preview.name);
+      if (newFileIndex !== -1) {
+        setNewMediaFiles(prev => prev.filter((_, i) => i !== newFileIndex));
+      }
+    }
     setMediaPreviews(prev => prev.filter((_, i) => i !== index));
   };
 
@@ -105,7 +118,23 @@ const PostEdit = () => {
     setSaving(true);
 
     try {
-      const mediaUrls = mediaPreviews.map(p => p.url);
+      // Collect existing media URLs (not base64)
+      const existingUrls = mediaPreviews
+        .filter(p => !p.isNew)
+        .map(p => p.url);
+
+      // Upload new files to S3
+      const newUrls = [];
+      for (const file of newMediaFiles) {
+        try {
+          const result = await uploadService.uploadFile(file);
+          newUrls.push(result.url);
+        } catch (err) {
+          console.error('Failed to upload file:', file.name, err);
+        }
+      }
+
+      const mediaUrls = [...existingUrls, ...newUrls];
 
       const data = {
         title: formData.title.trim(),
