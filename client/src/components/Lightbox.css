@@ -1,0 +1,235 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   LIGHTBOX - Image Gallery Viewer
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(20px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.lightbox-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 80px;
+}
+
+/* Close Button */
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white-10);
+  border: 1px solid var(--white-15);
+  border-radius: 12px;
+  color: var(--white);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.lightbox-close:hover {
+  background: var(--white-15);
+  transform: scale(1.05);
+}
+
+/* Navigation Arrows */
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white-10);
+  border: 1px solid var(--white-15);
+  border-radius: 50%;
+  color: var(--white);
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.lightbox-nav:hover {
+  background: var(--cyan-100);
+  border-color: var(--cyan);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.lightbox-prev {
+  left: 20px;
+}
+
+.lightbox-next {
+  right: 20px;
+}
+
+/* Image */
+.lightbox-image-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  max-height: calc(100vh - 200px);
+  overflow: hidden;
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+  animation: lightboxImageIn 0.3s var(--ease-out-expo);
+}
+
+@keyframes lightboxImageIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Footer */
+.lightbox-footer {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.lightbox-caption {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--gray-300);
+  text-align: center;
+  max-width: 600px;
+}
+
+.lightbox-counter {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gray-500);
+  padding: 6px 12px;
+  background: var(--white-10);
+  border-radius: var(--radius-full);
+}
+
+/* Thumbnails */
+.lightbox-thumbnails {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--white-10);
+  border: 1px solid var(--white-15);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+  max-width: 90%;
+  overflow-x: auto;
+}
+
+.lightbox-thumb {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  padding: 0;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  opacity: 0.6;
+}
+
+.lightbox-thumb:hover {
+  opacity: 1;
+}
+
+.lightbox-thumb.active {
+  border-color: var(--cyan);
+  opacity: 1;
+  box-shadow: 0 0 12px var(--cyan-200);
+}
+
+.lightbox-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Trigger Image Styles */
+.lightbox-trigger {
+  transition: all 0.3s ease;
+}
+
+.lightbox-trigger:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .lightbox-container {
+    padding: 60px 20px;
+  }
+
+  .lightbox-nav {
+    width: 44px;
+    height: 44px;
+    font-size: 1.5rem;
+  }
+
+  .lightbox-prev {
+    left: 10px;
+  }
+
+  .lightbox-next {
+    right: 10px;
+  }
+
+  .lightbox-close {
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .lightbox-thumbnails {
+    display: none;
+  }
+}
