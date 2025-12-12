@@ -1,0 +1,574 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   AUTH PAGES - Neo-Brutalist Luxury Tech Design
+   Login & Register shared styles
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.auth-shell {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1.5rem;
+  overflow: hidden;
+}
+
+/* Background Effects */
+.auth-shell::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  left: -20%;
+  width: 60%;
+  height: 120%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 240, 255, 0.12) 0%,
+    transparent 60%
+  );
+  filter: blur(60px);
+  animation: authGlow 10s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.auth-shell::after {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  right: -15%;
+  width: 50%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 107, 53, 0.08) 0%,
+    transparent 60%
+  );
+  filter: blur(60px);
+  animation: authGlow 12s ease-in-out infinite alternate-reverse;
+  pointer-events: none;
+}
+
+@keyframes authGlow {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+  100% { transform: translate(20px, -20px) scale(1.1); opacity: 0.8; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AUTH PANEL - Main Container
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.auth-panel {
+  position: relative;
+  width: min(1100px, 100%);
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 0;
+  background: rgba(8, 8, 12, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow:
+    0 40px 80px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  z-index: 1;
+}
+
+/* Top gradient line */
+.auth-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 240, 255, 0.5) 30%,
+    rgba(255, 107, 53, 0.3) 70%,
+    transparent 100%
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AUTH HERO - Left Side Branding
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.auth-hero {
+  position: relative;
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 240, 255, 0.03) 0%,
+    rgba(5, 5, 8, 0.5) 50%,
+    rgba(255, 107, 53, 0.02) 100%
+  );
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+}
+
+/* Hero Background Pattern */
+.auth-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+    radial-gradient(rgba(255, 107, 53, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px, 28px 28px;
+  background-position: 0 0, 14px 14px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Floating orb effect */
+.auth-hero::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  right: -10%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 240, 255, 0.2) 0%,
+    transparent 70%
+  );
+  filter: blur(40px);
+  animation: float 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-20px, 20px); }
+}
+
+.auth-hero .eyebrow {
+  position: relative;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--cyan);
+  margin-bottom: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.auth-hero .eyebrow::before {
+  content: '';
+  width: 32px;
+  height: 2px;
+  background: var(--gradient-cyan);
+  border-radius: 2px;
+}
+
+.auth-hero h1 {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  margin-bottom: 1rem;
+}
+
+.auth-hero h1 span {
+  display: inline;
+  color: var(--coral);
+}
+
+.auth-hero .lede {
+  position: relative;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--gray-400);
+  margin-bottom: 2rem;
+  max-width: 360px;
+}
+
+/* Auth Pills */
+.auth-pills {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.auth-pills .pill {
+  padding: 10px 18px;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--gray-400);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  transition: all 0.25s ease;
+}
+
+.auth-pills .pill:hover {
+  color: var(--cyan);
+  background: rgba(0, 240, 255, 0.05);
+  border-color: rgba(0, 240, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AUTH CARD - Right Side Form
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.auth-card {
+  position: relative;
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(5, 5, 8, 0.6);
+}
+
+.auth-card h2 {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-align: center;
+  margin-bottom: 2rem;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FORM STYLES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gray-400);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px 16px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-group input::placeholder {
+  color: var(--gray-600);
+}
+
+.form-group input:focus {
+  border-color: rgba(0, 240, 255, 0.5);
+  background: rgba(0, 240, 255, 0.03);
+  box-shadow:
+    0 0 0 3px rgba(0, 240, 255, 0.1),
+    0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Username Input Wrapper */
+.username-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.username-prefix {
+  position: absolute;
+  left: 16px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--cyan);
+  z-index: 1;
+}
+
+.username-input-wrapper input {
+  padding-left: 32px;
+}
+
+/* Username Status */
+.username-status {
+  margin-top: 6px;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.username-status.available {
+  color: #4ADE80;
+}
+
+.username-status.taken {
+  color: #FF6B6B;
+}
+
+.username-status .checking {
+  color: var(--gray-400);
+}
+
+/* Field Hint */
+.field-hint {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--gray-600);
+}
+
+/* Error Message */
+.error {
+  margin-top: 1rem;
+  padding: 12px 16px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: #FF6B6B;
+  background: rgba(255, 107, 107, 0.08);
+  border: 1px solid rgba(255, 107, 107, 0.2);
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* Submit Button */
+.btn.primary {
+  position: relative;
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 16px 24px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--black);
+  background: var(--gradient-cyan);
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 16px 32px rgba(0, 240, 255, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn.primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.25) 0%,
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn.primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow:
+    0 24px 48px rgba(0, 240, 255, 0.35),
+    0 0 0 1px rgba(0, 240, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn.primary:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
+.btn.primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn.primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AUTH OPTIONS - Checkboxes
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.auth-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  gap: 1rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--gray-400);
+  transition: color 0.2s ease;
+}
+
+.checkbox-label:hover {
+  color: var(--gray-300);
+}
+
+.checkbox-label input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.checkbox-label input[type="checkbox"]:hover {
+  border-color: rgba(0, 240, 255, 0.4);
+  background: rgba(0, 240, 255, 0.05);
+}
+
+.checkbox-label input[type="checkbox"]:checked {
+  background: var(--gradient-cyan);
+  border-color: var(--cyan);
+}
+
+.checkbox-label input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 5px;
+  height: 9px;
+  border: solid var(--black);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-label span {
+  user-select: none;
+}
+
+/* Auth Link */
+.auth-link {
+  font-family: var(--font-body);
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: var(--gray-500);
+}
+
+.auth-link a {
+  color: var(--cyan);
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.auth-link a:hover {
+  color: var(--cyan-light);
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  .auth-panel {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+  }
+
+  .auth-hero {
+    padding: 2rem;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    text-align: center;
+  }
+
+  .auth-hero .eyebrow {
+    justify-content: center;
+  }
+
+  .auth-hero .eyebrow::before {
+    display: none;
+  }
+
+  .auth-hero .lede {
+    max-width: 100%;
+  }
+
+  .auth-pills {
+    justify-content: center;
+  }
+
+  .auth-card {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-shell {
+    padding: 1.5rem 1rem;
+  }
+
+  .auth-panel {
+    border-radius: 24px;
+  }
+
+  .auth-hero {
+    padding: 1.5rem;
+  }
+
+  .auth-hero h1 {
+    font-size: 1.5rem;
+  }
+
+  .auth-card {
+    padding: 1.5rem;
+  }
+
+  .auth-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group input {
+    padding: 12px 14px;
+  }
+
+  .btn.primary {
+    padding: 14px 20px;
+  }
+}

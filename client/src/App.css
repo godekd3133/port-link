@@ -1,0 +1,255 @@
+.app-shell {
+  min-height: 100vh;
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+  background: radial-gradient(circle at 20% 20%, rgba(14, 165, 233, 0.08), transparent 25%),
+    radial-gradient(circle at 80% 10%, rgba(244, 114, 182, 0.08), transparent 30%),
+    radial-gradient(circle at 60% 70%, rgba(52, 211, 153, 0.06), transparent 28%),
+    var(--bg-base);
+}
+
+/* Aurora Background Effect */
+.bg-aurora {
+  position: fixed;
+  inset: -30%;
+  background: conic-gradient(
+    from 130deg at 40% 20%,
+    rgba(14, 165, 233, 0.15),
+    rgba(244, 114, 182, 0.2),
+    rgba(168, 85, 247, 0.15),
+    rgba(52, 211, 153, 0.12),
+    rgba(14, 165, 233, 0.15)
+  );
+  filter: blur(120px);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+  animation: auroraMove 20s ease-in-out infinite;
+}
+
+@keyframes auroraMove {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(5%, 5%) rotate(5deg);
+  }
+  50% {
+    transform: translate(-5%, 10%) rotate(-5deg);
+  }
+  75% {
+    transform: translate(10%, -5%) rotate(3deg);
+  }
+}
+
+/* Grid Pattern */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.5) 20%, rgba(0, 0, 0, 0.5) 80%, transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Gradient Overlay */
+.bg-gradient-top {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(14, 165, 233, 0.15), transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Page Loading State */
+.page-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 16px;
+  color: var(--text-secondary);
+  animation: fadeIn 0.5s ease;
+}
+
+.page-loading p {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Spinner */
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Spinner with glow effect */
+.spinner-glow {
+  width: 48px;
+  height: 48px;
+  border: 3px solid transparent;
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+}
+
+/* Page Transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.page-exit {
+  opacity: 1;
+}
+
+.page-exit-active {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Scroll Progress Indicator (can be implemented later) */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--gradient-primary);
+  z-index: 1000;
+  transition: width 0.1s ease;
+}
+
+/* Toast Notifications (for future use) */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.toast {
+  padding: 16px 24px;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  animation: slideInRight 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 400px;
+}
+
+.toast.success {
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.toast.error {
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.toast-icon {
+  font-size: 1.25rem;
+}
+
+.toast-message {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Tooltip Styles */
+.tooltip {
+  position: relative;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  background: rgba(15, 23, 42, 0.95);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Focus Visible Styles */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .bg-aurora {
+    animation: none;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .bg-aurora,
+  .bg-grid,
+  .bg-gradient-top,
+  .navbar,
+  .footer {
+    display: none !important;
+  }
+
+  .app-shell {
+    background: white;
+  }
+}
