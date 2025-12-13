@@ -115,9 +115,12 @@ export class AiService {
       const tokensUsed = response.usage?.total_tokens || 0;
 
       return { result, tokensUsed };
-    } catch (error) {
-      this.logger.error('OpenAI API error:', error);
-      throw new BadRequestException('AI 처리 중 오류가 발생했습니다.');
+    } catch (error: any) {
+      this.logger.error('OpenAI API error:', error?.message || error);
+      if (error?.response) {
+        this.logger.error('Error response:', JSON.stringify(error.response.data || error.response));
+      }
+      throw new BadRequestException(`AI 처리 중 오류: ${error?.message || 'Unknown error'}`);
     }
   }
 
@@ -221,9 +224,12 @@ ${evaluationCriteria}
         this.logger.error('Failed to parse AI response:', content);
         throw new BadRequestException('AI 응답 파싱에 실패했습니다.');
       }
-    } catch (error) {
-      this.logger.error('OpenAI API error:', error);
-      throw new BadRequestException('AI 처리 중 오류가 발생했습니다.');
+    } catch (error: any) {
+      this.logger.error('OpenAI API error:', error?.message || error);
+      if (error?.response) {
+        this.logger.error('Error response:', JSON.stringify(error.response.data || error.response));
+      }
+      throw new BadRequestException(`AI 처리 중 오류: ${error?.message || 'Unknown error'}`);
     }
   }
 
@@ -323,6 +329,91 @@ ${evaluationCriteria}
     };
 
     return criteria[profession || Profession.OTHER];
+  }
+
+  // AI 면접 질문 생성
+  async generateInterviewQuestions(dto: AiEvaluateDto): Promise<{ questions: Array<{ question: string; hint: string; category: string }>; tokensUsed: number }> {
+    this.checkApiKey();
+
+    const professionLabel = dto.profession ? ProfessionLabels[dto.profession] : '전문가';
+    const categoryLabel = dto.category ? ProjectCategoryLabels[dto.category] : '프로젝트';
+
+    const portfolioText = `
+# ${dto.title}
+
+${dto.summary ? `## 요약\n${dto.summary}\n` : ''}
+
+## 직종
+${professionLabel}
+
+## 프로젝트 유형
+${categoryLabel}
+
+## 스킬/도구
+${dto.skills?.join(', ') || dto.techStack?.join(', ') || '명시되지 않음'}
+
+## 내용
+${dto.content}
+`.trim();
+
+    const prompt = `다음 ${professionLabel}의 포트폴리오를 분석하고, 실제 면접에서 받을 수 있는 질문 10개를 생성해주세요.
+
+${portfolioText}
+
+각 질문에 대해:
+1. 실제 면접관이 물어볼 법한 구체적인 질문
+2. 답변할 때 참고할 수 있는 힌트
+3. 질문 카테고리 (기술적 질문, 문제해결, 협업, 의사결정, 성과, 성장 등)
+
+다음 JSON 형식으로 반환해주세요:
+{
+  "questions": [
+    {
+      "question": "면접 질문",
+      "hint": "답변 힌트",
+      "category": "카테고리"
+    }
+  ]
+}
+
+반드시 유효한 JSON만 반환하세요. 다른 텍스트는 포함하지 마세요.`;
+
+    try {
+      const systemPrompt = this.getSystemPromptByProfession(dto.profession);
+      const response = await this.openai!.chat.completions.create({
+        model: this.model,
+        messages: [
+          {
+            role: 'system',
+            content: `${systemPrompt} 면접관 관점에서 깊이 있는 질문을 생성합니다. 반드시 JSON 형식으로만 응답하세요.`,
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        temperature: 0.7,
+        max_tokens: 2500,
+        response_format: { type: 'json_object' },
+      });
+
+      const content = response.choices[0]?.message?.content || '{}';
+      const tokensUsed = response.usage?.total_tokens || 0;
+
+      try {
+        const result = JSON.parse(content);
+        return { ...result, tokensUsed };
+      } catch {
+        this.logger.error('Failed to parse AI response:', content);
+        throw new BadRequestException('AI 응답 파싱에 실패했습니다.');
+      }
+    } catch (error: any) {
+      this.logger.error('OpenAI API error:', error?.message || error);
+      if (error?.response) {
+        this.logger.error('Error response:', JSON.stringify(error.response.data || error.response));
+      }
+      throw new BadRequestException(`AI 처리 중 오류: ${error?.message || 'Unknown error'}`);
+    }
   }
 
   isEnabled(): boolean {

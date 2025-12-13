@@ -351,6 +351,40 @@
   vertical-align: middle;
 }
 
+/* Media Gallery */
+.post-media-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: rgba(14, 165, 233, 0.05);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+}
+
+.post-media-gallery .media-item {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  aspect-ratio: 16/10;
+  background: var(--bg-secondary);
+}
+
+.post-media-gallery .media-item img,
+.post-media-gallery .media-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.post-media-gallery .media-item:hover img,
+.post-media-gallery .media-item:hover video {
+  transform: scale(1.05);
+}
+
 /* Project Links */
 .project-links {
   display: flex;

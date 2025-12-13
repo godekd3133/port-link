@@ -203,6 +203,12 @@ export const aiService = {
     const response = await api.post('/ai/evaluate', portfolio);
     return response.data;
   },
+
+  // 면접 질문 생성
+  generateInterviewQuestions: async (portfolio) => {
+    const response = await api.post('/ai/interview-questions', portfolio);
+    return response.data;
+  },
 };
 
 export const collaborationService = {

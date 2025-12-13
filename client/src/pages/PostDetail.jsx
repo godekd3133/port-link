@@ -254,6 +254,21 @@ const PostDetail = () => {
             </ReactMarkdown>
           </div>
 
+          {/* Media Gallery */}
+          {post.media && post.media.length > 0 && (
+            <div className="post-media-gallery">
+              {post.media.map((url, idx) => (
+                <div key={idx} className="media-item">
+                  {url.match(/\.(mp4|webm|mov)$/i) ? (
+                    <video src={url} controls />
+                  ) : (
+                    <img src={url} alt={`미디어 ${idx + 1}`} loading="lazy" />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
           {/* Project Links */}
           {(post.demoUrl || post.repositoryUrl) && (
             <div className="project-links">

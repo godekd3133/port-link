@@ -39,4 +39,13 @@ export class AiController {
   async evaluatePortfolio(@Body() dto: AiEvaluateDto): Promise<AiEvaluateResponseDto> {
     return this.aiService.evaluatePortfolio(dto);
   }
+
+  @Post('interview-questions')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: '포트폴리오 기반 면접 질문 생성' })
+  @ApiResponse({ status: 200, description: '면접 질문 목록' })
+  async generateInterviewQuestions(@Body() dto: AiEvaluateDto) {
+    return this.aiService.generateInterviewQuestions(dto);
+  }
 }
