@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { profileService, postService } from '../services';
+import ProfileAIModal from '../components/ProfileAIModal';
 import './Profile.css';
 
 const Profile = () => {
@@ -21,6 +22,9 @@ const Profile = () => {
   const [quickPostMedia, setQuickPostMedia] = useState([]);
   const [quickPostLoading, setQuickPostLoading] = useState(false);
   const [quickPostError, setQuickPostError] = useState('');
+
+  // AI Modal state
+  const [showAIModal, setShowAIModal] = useState(false);
 
   const isOwnProfile = currentUser && currentUser.id === userId;
 
@@ -173,9 +177,17 @@ const Profile = () => {
           </div>
 
           {isOwnProfile && (
-            <Link to="/settings/profile" className="btn btn-secondary profile-edit-btn">
-              프로필 수정
-            </Link>
+            <div className="profile-actions">
+              <button
+                className="btn btn-ai profile-ai-btn"
+                onClick={() => setShowAIModal(true)}
+              >
+                <span>🤖</span> AI 분석
+              </button>
+              <Link to="/settings/profile" className="btn btn-secondary profile-edit-btn">
+                프로필 수정
+              </Link>
+            </div>
           )}
         </div>
 
@@ -379,6 +391,16 @@ const Profile = () => {
             <p>최근 활동 내역이 여기에 표시됩니다.</p>
           </div>
         </div>
+      )}
+
+      {/* AI Modal */}
+      {isOwnProfile && (
+        <ProfileAIModal
+          isOpen={showAIModal}
+          onClose={() => setShowAIModal(false)}
+          profile={profile}
+          posts={posts}
+        />
       )}
     </div>
   );
